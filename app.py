@@ -108,17 +108,26 @@ if uploaded_file:
         # Display predictions
         # --------------------------------------------------
         st.subheader("Predictions")
-
-        pred_df = pd.DataFrame({
-            "Prediction": y_pred
-        })
-
-        pred_df["Prediction Label"] = pred_df["Prediction"].map(
-            {0: "No Subscription", 1: "Subscription"}
-        )
-
+        
+        # Combine input features with predictions
+        result_df = X.copy()
+        result_df["Prediction"] = y_pred
+        result_df["Prediction Label"] = result_df["Prediction"].map(
+            {0: "No Subscription", 1: "Subscription"})
+        
+        # Reorder columns to show prediction first
+        cols = ["Prediction", "Prediction Label"] + [
+            col for col in result_df.columns
+            if col not in ["Prediction", "Prediction Label"]
+        ]
+        
+        result_df = result_df[cols]
+        
         st.info("Prediction Legend: 1 = Subscription, 0 = No Subscription")
-        st.dataframe(pred_df.head(20))
+        
+        # Show only first few rows for readability
+        st.dataframe(result_df.head(20))
+
 
         # --------------------------------------------------
         # Evaluation metrics (only if labels exist)
@@ -154,13 +163,7 @@ if uploaded_file:
 
             st.dataframe(cm_df)
 
-            # --------------------------------------------------
-            # Classification report
-            # --------------------------------------------------
-            st.markdown("---")
-            st.subheader("Classification Report")
-            st.text(classification_report(y_true, y_pred))
-
+            
         else:
             st.warning(
                 "Uploaded dataset does not contain labels (`y`). "
