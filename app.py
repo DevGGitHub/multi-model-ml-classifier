@@ -134,7 +134,7 @@ if uploaded_file:
         # --------------------------------------------------
         if labeled_data:
             st.markdown("---")
-            st.subheader("Evaluation Metrics")
+            st.subheader(f"Evaluation Metrics for: {model_name.replace('_', ' ').title()}")
 
             accuracy = accuracy_score(y_true, y_pred)
             precision = precision_score(y_true, y_pred)
@@ -152,7 +152,7 @@ if uploaded_file:
             # Confusion matrix
             # --------------------------------------------------
             st.markdown("---")
-            st.subheader("Confusion Matrix")
+            st.subheader(f"Confusion Matrix for: {model_name.replace('_', ' ').title()}")
 
             cm = confusion_matrix(y_true, y_pred)
             cm_df = pd.DataFrame(
