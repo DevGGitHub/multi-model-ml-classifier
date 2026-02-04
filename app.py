@@ -148,11 +148,13 @@ if uploaded_file:
             y_prob = model.predict_proba(X)[:, 1]
             auc = roc_auc_score(y_true, y_prob)
 
-            col1, col2, col3, col4 = st.columns(4)
+            col1, col2, col3 = st.columns(3)
+            col4, col5, col6 = st.columns(3)
 
             col1.metric("Accuracy", f"{accuracy:.3f}")
             col2.metric("AUC", f"{auc:.3f}")
             col3.metric("Precision", f"{precision:.3f}")
+            
             col4.metric("Recall", f"{recall:.3f}")
             col5.metric("F1 Score", f"{f1:.3f}")
             col6.metric("MCC", f"{mcc:.3f}")
