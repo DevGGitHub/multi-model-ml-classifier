@@ -4,9 +4,11 @@ import joblib
 
 from sklearn.metrics import (
     accuracy_score,
+    roc_auc_score,
     precision_score,
     recall_score,
     f1_score,
+    matthews_corrcoef,
     confusion_matrix,
     classification_report
 )
@@ -140,13 +142,20 @@ if uploaded_file:
             precision = precision_score(y_true, y_pred)
             recall = recall_score(y_true, y_pred)
             f1 = f1_score(y_true, y_pred)
+            mcc = matthews_corrcoef(y_true, y_pred)
+            
+            # Probabilities for AUC
+            y_prob = model.predict_proba(X)[:, 1]
+            auc = roc_auc_score(y_true, y_prob)
 
             col1, col2, col3, col4 = st.columns(4)
 
             col1.metric("Accuracy", f"{accuracy:.3f}")
-            col2.metric("Precision", f"{precision:.3f}")
-            col3.metric("Recall", f"{recall:.3f}")
-            col4.metric("F1 Score", f"{f1:.3f}")
+            col2.metric("AUC", f"{auc:.3f}")
+            col3.metric("Precision", f"{precision:.3f}")
+            col4.metric("Recall", f"{recall:.3f}")
+            col5.metric("F1 Score", f"{f1:.3f}")
+            col6.metric("MCC", f"{mcc:.3f}")
 
             # --------------------------------------------------
             # Confusion matrix
