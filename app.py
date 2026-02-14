@@ -51,7 +51,7 @@ st.markdown("---")
 
 # UPLOAD SECTION
 
-st.subheader("Upload Test Dataset (Optional)")
+st.subheader("Upload Test Dataset")
 
 uploaded_file = st.file_uploader(
     "Upload a CSV file (If not uploaded, default dataset will be used)",
@@ -59,18 +59,22 @@ uploaded_file = st.file_uploader(
 )
 
 # Decide which dataset to use
+data = None
+
 if uploaded_file:
     data = pd.read_csv(uploaded_file)
-    st.success("Using uploaded dataset.")
+    st.success(f"File {uploaded_file.name} successfully uploaded")
 else:
     data = default_data
-    if data is not None:
-        st.info("No dataset uploaded. Using default test_labeled.csv.")
+
 
 # Preview only if dataset exists
 if data is not None:
-    st.write("Preview of dataset:")
-    st.dataframe(data.head())
+    with st.expander("Dataset Preview", expanded=False):
+
+        st.write(f"Shape: {data.shape}")
+
+        st.dataframe(data.head())
 
 st.markdown("---")
 
@@ -97,6 +101,11 @@ st.markdown("---")
 # RUN EVALUATION BUTTON
 
 if st.button("Run Evaluation"):
+
+    if uploaded_file:
+        st.info("Using uploaded dataset")
+    else:
+        st.info("No dataset uploaded. Using default test_labeled.csv.")
 
     if data is None:
         st.error("No dataset available.")
