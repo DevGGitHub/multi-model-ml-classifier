@@ -124,24 +124,7 @@ if st.button("Run Evaluation"):
         
         y_pred = model.predict(X)
 
-        st.subheader("Predictions")
-
-        result_df = X.copy()
-        result_df["Prediction"] = y_pred
-        result_df["Prediction Label"] = result_df["Prediction"].map(
-            {0: "No Subscription", 1: "Subscription"}
-        )
-
-        cols = ["Prediction", "Prediction Label"] + [
-            c for c in result_df.columns
-            if c not in ["Prediction", "Prediction Label"]
-        ]
-
-        result_df = result_df[cols]
-
-        st.info("Prediction Legend: 1 = Subscription, 0 = No Subscription")
-        st.dataframe(result_df.head(20))
-       
+               
         # METRICS DISPLAY
         
         if labeled_data:
